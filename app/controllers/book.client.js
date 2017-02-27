@@ -9,31 +9,55 @@
   let urlPic = appUrl + '/pics';
 
   let formAddPic = document.forms['formAddPic'] || null;
-  console.log(formAddPic);
 
   let onAddPic = e => {
     console.log("on add pic");
     e.preventDefault();
     e.target.disabled = true;
 
-    let url = urlPic;
-    let data = {
-      picUrl: formAddPic.picUrl.value,
-      picTitle: formAddPic.picTitle.value
+    let urlGiven = formAddPic.picUrl.value;
+    let titleGiven = formAddPic.picTitle.value;
+
+    let onPicAdded = (err, picAdded) => {
+      e.target.disabled = false;
+      if (!picAdded) return;
+      console.log("Pic added", picAdded);
     }
 
-    ajaxFunctions.ajaxRequest(
-      'POST',
-      url,
-      data,
-      ajaxFunctions.onDataReceived(
-        (err, picAdded) => {
-          e.target.disabled = false;
-          if (!picAdded) return;
-          console.log("Pic added", picAdded);
-        }
-      )
-    );
+    let sendPic = (picUrl, titleUrl) => {
+      console.log("Sending: ", picUrl, titleUrl);
+      let data = {
+        picUrl: picUrl,
+        picTitle: titleUrl
+      }
+      ajaxFunctions.ajaxRequest('POST', urlPic, data, ajaxFunctions.onDataReceived(onPicAdded));
+    }
+
+    let validatePic = (urlGiven, titleGiven, callback) => {
+
+      let toValidate = [
+        helper.testImage(urlGiven),
+        helper.validateString(titleGiven, 2, 20).then(
+          (validated) => Promise.resolve(validated),
+          (error) => Promise.reject(Error("Pic Title not valid: " + error.message))
+        )
+      ];
+      Promise.all(toValidate).then(
+        (validated) => callback(false, validated),
+        (error) => callback(error)
+      );
+
+    }
+
+    validatePic(urlGiven, titleGiven, (err, validated) => {
+      if (err)
+        return errorHandler.onMessage({
+          type: 'danger',
+          text: err.message
+        });
+      sendPic(urlGiven, titleGiven);
+    })
+
   }
 
   if (formAddPic)
