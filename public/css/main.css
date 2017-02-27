@@ -1,0 +1,119 @@
+/********* Fonts **********/
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto'), local('Roboto-Regular'), url('../fonts/Roboto-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Roboto Medium'), local('Roboto-Medium'), url('../fonts/Roboto-Medium.ttf') format('truetype');
+}
+
+/*********************************************/
+
+
+html {
+  height: 100%;
+  position: relative;
+}
+
+body {
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+  min-height: 100%;
+  position: relative;
+}
+
+.myContent {
+  padding-bottom:100px;   /* Height of the footer */
+}
+
+.navbar {
+  margin-bottom: 0px !important;
+}
+
+/**************************
+  GENERAL ERROR MESSAGE
+****************************/
+.messageOnScreen {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 5;
+}
+/*
+.messageOnScreen button{
+  color: #D8000C;
+  background-color: #FFBABA;
+}
+*/
+/**************************
+  FOOTER
+****************************/
+
+footer {
+   position: absolute;
+   bottom: 0;
+   right: 0;
+   left: 0;
+   height:73px;   /* Height of the footer */
+   background-color: #efefef;
+   margin:0
+}
+footer p {
+  font-family: 'Roboto', sans-serif;
+}
+
+.social:hover {
+     -webkit-transform: scale(1.1);
+     -moz-transform: scale(1.1);
+     -o-transform: scale(1.1);
+ }
+ .social {
+     -webkit-transform: scale(0.8);
+     /* Browser Variations: */
+
+     -moz-transform: scale(0.8);
+     -o-transform: scale(0.8);
+     -webkit-transition-duration: 0.5s;
+     -moz-transition-duration: 0.5s;
+     -o-transition-duration: 0.5s;
+ }
+
+/*
+    Multicoloured Hover Variations
+*/
+
+ #social-fb:hover {
+     color: #3B5998;
+ }
+ #social-ln:hover {
+     color: #4875B4;
+ }
+ #social-github:hover {
+     color: #333;
+ }
+ #social-em:hover {
+     color: #f39c12;
+ }
+
+@media only screen and (max-width: 480px) {
+  footer {
+    height:60px;   /* Height of the footer */
+  }
+   footer p {
+     font-size: 0.75em;
+   }
+   .fa {
+     font-size: 2.5em !important;
+   }
+   .messageOnScreen {
+     left: 15px;
+     text-align: center;
+   }
+}

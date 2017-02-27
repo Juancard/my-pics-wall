@@ -1,0 +1,42 @@
+{
+  "name": "my-pics-wall",
+  "version": "1.0.0",
+  "description": "Share pics and enjoy!",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Juancard/my-pics-wall"
+  },
+  "homepage": "",
+  "bugs": "https://github.com/Juancard/my-pics-wall/issues",
+  "keywords": [
+    "MongoDB",
+    "Mongoose",
+    "full stack",
+    "Express",
+    "Node",
+    "javascript"
+  ],
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Juan Cardona",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.16.0",
+    "bootstrap": "^3.3.7",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^1.2.0",
+    "express": "^4.12.4",
+    "express-session": "^1.11.3",
+    "flash": "^1.1.0",
+    "http-verror": "0.0.5",
+    "jquery": "^3.1.1",
+    "mongoose": "^4.1.0",
+    "morgan": "^1.7.0",
+    "passport": "^0.3.0",
+    "passport-twitter": "^1.0.4",
+    "pug": "^2.0.0-beta10"
+  }
+}
