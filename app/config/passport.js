@@ -21,14 +21,16 @@ module.exports = function (passport) {
 	  callbackURL: configAuth.twitterAuth.callbackURL,
 		passReqToCallback: true
 	},
-	function (token, refreshToken, profile, done) {
+	function (req, token, refreshToken, profile, done) {
 		process.nextTick(function () {
 			User.findOne({ 'twitter.id': profile.id }, function (err, user) {
 				if (err) return done(err);
 				if (user) {
 					return done(null, user);
 				} else {
+					console.log(profile);
 					var newUser = User.newInstance(
+						'twitter',
 						profile.id,
 						profile.username,
 						profile.displayName,
