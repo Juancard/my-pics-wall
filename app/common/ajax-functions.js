@@ -44,6 +44,7 @@ var ajaxFunctions = {
          errorHandler.onError(err);
          return callback(err);
        }
+       errorHandler.cleanMessages();
        data = JSON.parse(data);
        if (data.message) errorHandler.onMessage(data.message);
        return callback(false, data.results);

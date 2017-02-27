@@ -9,13 +9,14 @@ var errorHandler = {
   onMessage: function onMessage(message){
     let m = createMessageElement(message.text, message.type);
     m.focus();
+  },
+  cleanMessages: function cleanMessages(){
+    let toClean = document.getElementsByClassName('messageOnScreen');
+    for (let i=0; i<toClean.length; i++) toClean[i].outerHTML = '';
   }
 }
 
 function createMessageElement(message, type='danger') {
-  let toClean = document.getElementsByClassName('messageOnScreen');
-  for (let i=0; i<toClean.length; i++) toClean[i].outerHTML = '';
-
   let divMessage = document.createElement('DIV');
   divMessage.className = "messageOnScreen alert alert-" + type + " alert-dismissable fade in";
 

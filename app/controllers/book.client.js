@@ -34,10 +34,9 @@
     }
 
     let validatePic = (urlGiven, titleGiven, callback) => {
-
       let toValidate = [
-        helper.testImage(urlGiven),
-        helper.validateString(titleGiven, 2, 20).then(
+        validator.imageUrl(urlGiven),
+        validator.string(titleGiven, 2, 20).then(
           (validated) => Promise.resolve(validated),
           (error) => Promise.reject(Error("Pic Title not valid: " + error.message))
         )
@@ -46,7 +45,6 @@
         (validated) => callback(false, validated),
         (error) => callback(error)
       );
-
     }
 
     validatePic(urlGiven, titleGiven, (err, validated) => {
