@@ -50,6 +50,13 @@ function picHandler () {
         }
       }).populate('user').populate('state')
       .exec();
+  },
+
+  this.getPicById = (picId) => {
+    return Pic
+      .findById(picId)
+      .populate('user').populate('state')
+      .exec();
   }
 
 }

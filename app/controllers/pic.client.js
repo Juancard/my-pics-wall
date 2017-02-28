@@ -89,7 +89,7 @@
 
     let picContainer = helper.findAncestorByClass(elementClicked, 'picContainer');
     let picId;
-    if (picId)
+    if (picContainer)
       picId = picContainer.id;
 
     elementClicked.disabled = true;
@@ -114,19 +114,19 @@
   //**************** REMOVE PIC ***********************
 
   function onRemovePic(picId, callback){
-    console.log("on remove pic");
-    /*
-    let url = urlBook + '/' + bookUserId + urlRemove;
+    console.log("on remove pic: ", picId);
+    let url = urlPic + '/' + picId;
     ajaxFunctions.ajaxRequest('DELETE', url,
       null, ajaxFunctions.onDataReceived(
         (err, removed) => {
-          if (removed)
-            document.getElementById(removed._id).outerHTML = ''
+          if (removed){
+            let elementRemoved = document.getElementById(removed._id);
+            masonryRemove(elementRemoved);
+          }
           return callback();
         }
       )
     )
-    */
   }
 
   //**************** END REMOVE PIC ***********************
@@ -134,11 +134,12 @@
   //**************** TOGGLE LIKE *************
 
   function onToggleLikePic(picId, callback){
-    console.log("on toggle like pic");
-    /*
-    let url = urlBook + '/' + bookUserId + urlToggle;
-    ajaxFunctions.ajaxRequest('GET', url, null, ajaxFunctions.onDataReceived((err, toggled) => {
+    console.log("on toggle like pic: ", picId);
+    let url = urlPic + '/' + picId;
+    ajaxFunctions.ajaxRequest('POST', url, null, ajaxFunctions.onDataReceived((err, toggled) => {
       if (toggled) {
+        console.log("received: ", toggled);
+        /*
         let bookElement = document.getElementById(toggled._id)
         let actionElements = bookElement.getElementsByClassName('action');
         for (let i=0; i<actionElements.length; i++){
@@ -148,10 +149,10 @@
             span.innerHTML = (toggled.state.state != 3)? "Yes" : "No";
           }
         }
+        */
       }
       callback();
     }))
-    */
   }
 
   //*********** END TOGGLE LIKE *************

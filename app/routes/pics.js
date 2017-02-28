@@ -5,6 +5,29 @@ module.exports = function (app, appEnv) {
   let PicHandler = require(appEnv.path + '/app/controllers/picHandler.server.js');
   let picHandler = new PicHandler();
 
+  app.param("pic",  function (req, res, next, picId) {
+    console.log("Requested pic id: ", picId);
+    picHandler.getPicById(picId)
+      .then((pic) => {
+        if (!pic || (pic && pic.state.state == 'inactive'))
+          return next(
+            new appEnv.errors.NotFound(
+              "The resource requested is not available"
+            )
+          );
+        req.pic = pic;
+        return next();
+      })
+      .catch((err) => {
+        return next(
+          new appEnv.errors.InternalError(
+            err,
+            "Error in retrieving the requested Pic"
+          )
+        );
+      });
+  });
+
   app.route('/')
     .get(function (req, res) {
       console.log("in route get all pics");
@@ -52,6 +75,29 @@ module.exports = function (app, appEnv) {
             )
           )
         );
+    });
+
+  app.route('/pics/:pic([a-fA-F0-9]{24})')
+    .delete(/*appEnv.middleware.isLoggedIn,*/ (req, res, next) => {
+      console.log("in route delete pic");
+      let out = {
+        results: req.pic,
+        message: {
+          type: 'info',
+          text: 'Pic deleted succesfully'
+        }
+      }
+      res.json(out);
+    })
+    .post(/*appEnv.middleware.isLoggedIn,*/ (req, res, next) => {
+      console.log("in route toggle like");
+      let out = {
+        message: {
+          type: 'info',
+          text: 'Succes on like (delete this shit)'
+        }
+      }
+      res.json(out);
     });
 
 }
