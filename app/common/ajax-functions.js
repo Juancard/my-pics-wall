@@ -47,6 +47,7 @@ var ajaxFunctions = {
        errorHandler.cleanMessages();
        data = JSON.parse(data);
        if (data.message) errorHandler.onMessage(data.message);
+       if (data.redirect) window.location = data.redirect.url;
        return callback(false, data.results);
      }
    }

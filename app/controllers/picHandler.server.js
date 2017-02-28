@@ -8,7 +8,9 @@ var User = require('../models/users.js');
 var http_verror = require('http-verror');
 
 function picHandler () {
-
+  this.addPic = (user, url, title, callback) => {
+    return callback(false, {url, title})
+  }
 }
 
 module.exports = picHandler;

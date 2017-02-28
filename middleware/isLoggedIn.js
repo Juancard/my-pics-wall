@@ -9,10 +9,13 @@ module.exports = function(req, res, next) {
     if (req.xhr)
       return res.json({
         message: {
-          type: 'danger',
+          type: 'warning',
           text: 'Sign in first to perform this action'
+        },
+        redirect: {
+          url: process.env.APP_URL + 'auth/twitter'
         }
       });
-    res.redirect("/");
+    res.redirect("/auth/twitter");
   }
 }

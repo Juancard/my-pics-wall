@@ -8,11 +8,16 @@ module.exports = function (app, appEnv) {
   app.route('/pics')
   	.post(appEnv.middleware.isLoggedIn, function (req, res) {
       console.log("in route add pic");
-      let out = {
-        picUrl: req.body.picUrl,
-        picTitle: req.body.picTitle
-      };
-      res.json({results: out});
+      picHandler.addPic(req.user, req.body.picUrl, req.body.picTitle, (err, newPic) => {
+        if (err)
+         return callback(
+           new appEnv.errors.InternalError(
+             err,
+             "Error in adding pic"
+           )
+         );
+        res.json({results: newPic});
+      });
   	});
 
 }
