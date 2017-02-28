@@ -9,17 +9,30 @@ block content
         each pic in pics
           - let owner = pic.user;
           - let ownerName = owner.twitter.username;
-          .article.grid-item
+          article.picContainer.grid-item(id=pic.id)
             .thumbnail
               a(href="/pics/" + ownerName)
                 img(width="182", src=pic.url, alt=pic.title)
               .caption
                 h4.text-center #{pic.title}
                 .btn-group
-                  button.btn.btn-sm.btn-info()
+                  button.action.btn.btn-sm.btn-info(value="toggleLike")
                     span.glyphicon.glyphicon-thumbs-up
-                  button.btn.btn-sm.btn-danger()
+                  button.action.btn.btn-sm.btn-danger(value="remove")
                     span.glyphicon.glyphicon-remove
+  #picTemplate(style='display: none')
+    - let thisUserName = (user)? user.twitter.username : '';
+    article.grid-item.picContainer
+      .thumbnail
+        a(href="/pics/" + thisUserName)
+          img.picImg(width="182", src='', alt='')
+        .caption
+          h4.picTitle.text-center
+          .btn-group
+            button.action.btn.btn-sm.btn-info(value="toggleLike")
+              span.glyphicon.glyphicon-thumbs-up
+            button.action.btn.btn-sm.btn-danger(value="remove")
+              span.glyphicon.glyphicon-remove
 
 block append js
   script(type='text/javascript', src='/controllers/pic.client.js')
@@ -29,3 +42,8 @@ block append js
       itemSelector: '.grid-item',
       columnWidth: 200
     });
+    var masonryAppend = (elem) => {
+      grid.insertBefore(elem, grid.firstChild);
+      msnry.prepended( elem );
+      msnry.layout();
+    }

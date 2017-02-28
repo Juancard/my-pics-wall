@@ -38,6 +38,7 @@ function picHandler () {
   this.getAllPics = () => {
     return Pic.find({})
       .populate('state').populate('user')
+      .sort({ dateAdded: -1 })
       .exec();
   },
 
