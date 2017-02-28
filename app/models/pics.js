@@ -26,12 +26,12 @@ var Pic = new Schema({
 });
 
 Pic.statics
-  .newInstance = function newInstance(user, state, url) {
+  .newInstance = function newInstance(url, user, state) {
   let newPic = new this();
 
+  newPic.url = url;
 	newPic.user = user;
 	newPic.state = state;
-  newPic.url = url;
 
   return newPic;
 }

@@ -8,9 +8,32 @@ var User = require('../models/users.js');
 var http_verror = require('http-verror');
 
 function picHandler () {
+
   this.addPic = (user, url, title, callback) => {
-    return callback(false, {url, title})
+    let newPicState = PicState.newInstance();
+    let newPic = Pic.newInstance(url, user, newPicState._id);
+    newPic.save((err, picSaved) => {
+      if (err)
+        return callback(
+          err,
+          "Could not save new Pic in db"
+        );
+      newPicState.pic = picSaved._id;
+      newPicState.save((err, picStateSaved) => {
+        if (err){
+          picSaved.remove();
+          return callback(
+            err,
+            "Could not save state of new pic in db"
+          );
+        }
+        //populate
+        picSaved.state = picStateSaved;
+        return callback(false, picSaved);
+      })
+    });
   }
+  
 }
 
 module.exports = picHandler;
