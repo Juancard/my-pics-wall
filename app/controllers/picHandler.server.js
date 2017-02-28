@@ -10,30 +10,32 @@ var http_verror = require('http-verror');
 function picHandler () {
 
   this.addPic = (user, url, title, callback) => {
-    let newPicState = PicState.newInstance();
-    let newPic = Pic.newInstance(url, user, newPicState._id);
-    newPic.save((err, picSaved) => {
-      if (err)
-        return callback(
-          err,
-          "Could not save new Pic in db"
-        );
-      newPicState.pic = picSaved._id;
-      newPicState.save((err, picStateSaved) => {
-        if (err){
-          picSaved.remove();
-          return callback(
-            err,
-            "Could not save state of new pic in db"
-          );
+    return new Promise( (resolve, reject) => {
+      let newPicState = PicState.newInstance();
+      let newPic = Pic.newInstance(url, title, user, newPicState._id);
+      newPic.save().then(
+        (picSaved) => {
+          newPicState.pic = newPic._id;
+          newPicState.save()
+            .then(
+              (newPicStateSaved) => {
+                picSaved.state = newPicStateSaved;
+                return resolve(picSaved);
+              }
+            )
+            .catch(
+              (err) => {
+                Pic.remove(picSaved).exec().then(
+                  (removed) => reject(err)
+                ).catch(reject)
+              }
+            )
         }
-        //populate
-        picSaved.state = picStateSaved;
-        return callback(false, picSaved);
-      })
+      ).catch(reject);
     });
+
   }
-  
+
 }
 
 module.exports = picHandler;

@@ -22,14 +22,19 @@ var Pic = new Schema({
 	url: {
     type: String,
     required: true
+  },
+  title: {
+    type: String,
+    required: true
   }
 });
 
 Pic.statics
-  .newInstance = function newInstance(url, user, state) {
+  .newInstance = function newInstance(url, title, user, state) {
   let newPic = new this();
 
   newPic.url = url;
+  newPic.title = title;
 	newPic.user = user;
 	newPic.state = state;
 
