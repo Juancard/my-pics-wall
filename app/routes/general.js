@@ -7,11 +7,6 @@
 
 module.exports = function (app, appEnv) {
 
-  app.route('/')
-    .get(function (req, res) {
-      res.render(appEnv.path + '/app/views/pages/index.pug');
-    });
-
   app.route('*')
     .get(function(req, res, next){
       next(new appEnv.errors.NotFound());

@@ -4,6 +4,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var PicLike = new Schema({
+  pic: {
+    type: Schema.Types.ObjectId,
+    ref: 'Pic',
+    required: true
+  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',

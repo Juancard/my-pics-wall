@@ -1,6 +1,16 @@
 extends ../skeleton.pug
 
 block content
+  each pic in pics
+    .article
+      img.img-responsive(src=pic.url, alt=pic.title)
+      h4 #{pic.title}
+      p likes: #{pic.likes.length}
+      if user
+        p owner: #{'@' + pic.user.twitter.username}
+        if (user._id.equals(pic.user._id))
+          p You own this pic
+
 
 block append js
   script(type='text/javascript', src='/controllers/pic.client.js')

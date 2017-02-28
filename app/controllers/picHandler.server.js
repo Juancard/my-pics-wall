@@ -9,7 +9,7 @@ var http_verror = require('http-verror');
 
 function picHandler () {
 
-  this.addPic = (user, url, title, callback) => {
+  this.addPic = (user, url, title) => {
     return new Promise( (resolve, reject) => {
       let newPicState = PicState.newInstance();
       let newPic = Pic.newInstance(url, title, user, newPicState._id);
@@ -33,7 +33,22 @@ function picHandler () {
         }
       ).catch(reject);
     });
+  },
 
+  this.getAllPics = () => {
+    return Pic.find({})
+      .populate('state').populate('user')
+      .exec();
+  },
+
+  this.getLikesFromPics = (picsId) => {
+    return PicLike
+      .find({
+        'pic': {
+          $in: picsId
+        }
+      }).populate('user').populate('state')
+      .exec();
   }
 
 }
