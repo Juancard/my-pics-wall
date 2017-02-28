@@ -14,8 +14,8 @@ var User = new Schema({
 });
 
 User.statics
-  .newInstance = function newInstance(strategy, id, displayName,
-		username, imageUrl) {
+  .newInstance = function newInstance(strategy, id,
+		username, displayName, imageUrl) {
   let newUser = new this();
 
 	newUser[strategy].id = id;

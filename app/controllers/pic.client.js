@@ -22,6 +22,7 @@
       e.target.disabled = false;
       if (!picAdded) return;
       console.log("Pic added", picAdded);
+      location.reload();
     }
 
     let sendPic = (picUrl, titleUrl) => {

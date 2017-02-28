@@ -1,16 +1,31 @@
 extends ../skeleton.pug
 
-block content
-  each pic in pics
-    .article
-      img.img-responsive(src=pic.url, alt=pic.title)
-      h4 #{pic.title}
-      p likes: #{pic.likes.length}
-      if user
-        p owner: #{'@' + pic.user.twitter.username}
-        if (user._id.equals(pic.user._id))
-          p You own this pic
+block append html_js
+  script(src='https://unpkg.com/masonry-layout@4.1/dist/masonry.pkgd.min.js')
 
+block content
+  .container
+    .grid(data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 200 }')
+        each pic in pics
+          - let owner = pic.user;
+          - let ownerName = owner.twitter.username;
+          .article.grid-item
+            .thumbnail
+              a(href="/pics/" + ownerName)
+                img(width="182", src=pic.url, alt=pic.title)
+              .caption
+                h4.text-center #{pic.title}
+                .btn-group
+                  button.btn.btn-sm.btn-info()
+                    span.glyphicon.glyphicon-thumbs-up
+                  button.btn.btn-sm.btn-danger()
+                    span.glyphicon.glyphicon-remove
 
 block append js
   script(type='text/javascript', src='/controllers/pic.client.js')
+  script.
+    var grid = document.querySelector('.grid');
+    var msnry = new Masonry( grid, {
+      itemSelector: '.grid-item',
+      columnWidth: 200
+    });
