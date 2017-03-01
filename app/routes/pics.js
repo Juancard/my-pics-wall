@@ -78,7 +78,9 @@ module.exports = function (app, appEnv) {
     });
 
   app.route('/pics/:pic([a-fA-F0-9]{24})')
-    .delete(/*appEnv.middleware.isLoggedIn,*/ (req, res, next) => {
+    .delete(appEnv.middleware.isLoggedIn,
+      appEnv.middleware.pics.isOwner(true),
+       (req, res, next) => {
       console.log("in route delete pic");
       picHandler
         .removePic(req.pic)

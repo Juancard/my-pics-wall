@@ -7,6 +7,7 @@ block content
   .container
     .grid(data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 200 }')
         each pic in pics
+          -console.log(pic);
           - let owner = pic.user;
           - let ownerName = owner.twitter.username;
           article.picContainer.grid-item(id=pic.id)
@@ -20,9 +21,9 @@ block content
                     span.glyphicon.glyphicon-thumbs-up
                     | #{' '}
                     span.badge.likesCount #{pic.likes.length}
-                  //if (user && owner.equals(user._id))
-                  button.action.btn.btn-sm.btn-danger(value="remove")
-                    span.glyphicon.glyphicon-remove
+                  if (user && owner._id.equals(user._id))
+                    button.action.btn.btn-sm.btn-danger(value="remove")
+                      span.glyphicon.glyphicon-remove
   #picTemplate(style='display: none')
     - let thisUserName = (user)? user.twitter.username : '';
     article.grid-item.picContainer

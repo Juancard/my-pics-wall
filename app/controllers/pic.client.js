@@ -25,7 +25,6 @@
     }
 
     let sendPic = (picUrl, titleUrl) => {
-      console.log("Sending: ", picUrl, titleUrl);
       let data = {
         picUrl: picUrl,
         picTitle: titleUrl
@@ -114,7 +113,7 @@
   //**************** REMOVE PIC ***********************
 
   function onRemovePic(picId, callback){
-    console.log("on remove pic: ", picId);
+    console.log("on remove pic");
     let url = urlPic + '/' + picId;
     ajaxFunctions.ajaxRequest('DELETE', url,
       null, ajaxFunctions.onDataReceived(
@@ -134,7 +133,7 @@
   //**************** TOGGLE LIKE *************
 
   function onToggleLikePic(picId, callback){
-    console.log("on toggle like pic: ", picId);
+    console.log("on toggle like pic");
     let url = urlPic + '/' + picId;
     ajaxFunctions.ajaxRequest('POST', url, null, ajaxFunctions.onDataReceived((err, toggled) => {
       if (toggled) {

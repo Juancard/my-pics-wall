@@ -4,7 +4,6 @@ var Pic = require('../models/pics.js');
 var PicState = require('../models/picStates.js');
 var PicLike = require('../models/picLikes.js');
 var PicLikeState = require('../models/picLikeStates.js');
-var User = require('../models/users.js');
 var http_verror = require('http-verror');
 
 function picHandler () {
@@ -37,6 +36,13 @@ function picHandler () {
 
   this.getAllPics = () => {
     return Pic.find({})
+      .populate('state').populate('user')
+      .sort({ dateAdded: -1 })
+      .exec();
+  },
+
+  this.getPicsByUser = (user) => {
+    return Pic.find({'user': user._id})
       .populate('state').populate('user')
       .sort({ dateAdded: -1 })
       .exec();
