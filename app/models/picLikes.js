@@ -26,10 +26,13 @@ var PicLike = new Schema({
   }
 });
 
+PicLike.index({ pic: 1, user: 1}, { unique: true });
+
 PicLike.statics
-  .newInstance = function newInstance(user, state) {
+  .newInstance = function newInstance(user, pic, state) {
   let newPicLike = new this();
 
+  newPicLike.pic = pic;
 	newPicLike.user = user;
 	newPicLike.state = state;
 

@@ -138,18 +138,11 @@
     let url = urlPic + '/' + picId;
     ajaxFunctions.ajaxRequest('POST', url, null, ajaxFunctions.onDataReceived((err, toggled) => {
       if (toggled) {
-        console.log("received: ", toggled);
-        /*
-        let bookElement = document.getElementById(toggled._id)
-        let actionElements = bookElement.getElementsByClassName('action');
-        for (let i=0; i<actionElements.length; i++){
-          if (actionElements[i].getAttribute('value') == 'toggleRequestable'){
-            let span = actionElements[i].getElementsByTagName('SPAN')[0];
-            //HARDCODE: SHOULD ASK FOR STATE STRING 'UNAVAILABLE', NOT STATE NUMBER 3
-            span.innerHTML = (toggled.state.state != 3)? "Yes" : "No";
-          }
-        }
-        */
+        let picElement = document.getElementById(toggled.pic)
+        let likesCountElement = picElement.getElementsByClassName('likesCount')[0];
+        let likesCount = Number(likesCountElement.innerHTML);
+        (toggled.state.state == 0)? likesCount-- : likesCount++;
+        likesCountElement.innerHTML = likesCount;
       }
       callback();
     }))

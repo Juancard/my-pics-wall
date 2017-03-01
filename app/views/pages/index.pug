@@ -18,6 +18,8 @@ block content
                 .btn-group
                   button.action.btn.btn-sm.btn-info(value="toggleLike")
                     span.glyphicon.glyphicon-thumbs-up
+                    | #{' '}
+                    span.badge.likesCount #{pic.likes.length}
                   button.action.btn.btn-sm.btn-danger(value="remove")
                     span.glyphicon.glyphicon-remove
   #picTemplate(style='display: none')
@@ -31,6 +33,8 @@ block content
           .btn-group
             button.action.btn.btn-sm.btn-info(value="toggleLike")
               span.glyphicon.glyphicon-thumbs-up
+              | #{' '}
+              span.badge.likesCount 0
             button.action.btn.btn-sm.btn-danger(value="remove")
               span.glyphicon.glyphicon-remove
 

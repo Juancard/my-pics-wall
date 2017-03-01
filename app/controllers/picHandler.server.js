@@ -57,6 +57,61 @@ function picHandler () {
       .findById(picId)
       .populate('user').populate('state')
       .exec();
+  },
+
+  this.removePic = (pic) => {
+    return Pic
+      .findById(pic._id)
+      .populate('user').populate('state')
+      .exec();
+  },
+
+  this.toggleLike = (pic, user) => {
+    return new Promise(function(resolve, reject) {
+      PicLike
+        .findOne({
+          'pic': pic._id,
+          'user': user._id
+        })
+        .populate('state').exec()
+        .catch(reject)
+        .then((picLike) => {
+
+          let newPicLikeState = PicLikeState.newInstance();
+          if (!picLike){
+            picLike = PicLike.newInstance(user._id, pic._id, newPicLikeState._id)
+          } else if (picLike.state.state == 'active'){
+            newPicLikeState.state = 'inactive';
+          }
+          picLike.state = newPicLikeState._id;
+
+          picLike.save()
+            .catch(err => reject(
+                new http_verror.InternalError(
+                  err, "Could not save like in database"
+                )
+              )
+            )
+            .then(picLikeSaved => {
+              newPicLikeState.picLike = picLikeSaved._id;
+              newPicLikeState.save()
+                .catch(err => {
+                  PicLike.findByIdAndRemove(picLikeSaved._id).remove().exec()
+                    .catch(reject)
+                    .then(removed => reject(
+                        new http_verror.InternalError(
+                          err, "Could not save state of like in database"
+                        )
+                      )
+                    );
+                })
+                .then(stateSaved => {
+                  picLikeSaved.state = stateSaved;
+                  resolve(picLikeSaved);
+                });
+            });
+        });
+    });
   }
 
 }

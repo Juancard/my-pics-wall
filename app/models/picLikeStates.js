@@ -9,9 +9,9 @@ const DEFAULT_STATE_NUMBER = 0
 const stateHandler = new StateHandler(STATES, DEFAULT_STATE_NUMBER);
 
 var PicLikeState = new Schema({
-	pic: {
+	picLike: {
     type: Schema.Types.ObjectId,
-    ref: 'Pic'
+    ref: 'PicLike'
   },
   date: {
     type: Date,
@@ -29,7 +29,7 @@ var PicLikeState = new Schema({
 });
 
 PicLikeState.set('toObject', { getters: true });
-PicLikeState.index({ picState: 1, date: -1}, { unique: true });
+PicLikeState.index({ picLike: 1, date: -1}, { unique: true });
 
 PicLikeState.statics
   .newInstance = function newInstance(state='active', picState=null) {
