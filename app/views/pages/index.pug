@@ -20,6 +20,7 @@ block content
                     span.glyphicon.glyphicon-thumbs-up
                     | #{' '}
                     span.badge.likesCount #{pic.likes.length}
+                  //if (user && owner.equals(user._id))
                   button.action.btn.btn-sm.btn-danger(value="remove")
                     span.glyphicon.glyphicon-remove
   #picTemplate(style='display: none')

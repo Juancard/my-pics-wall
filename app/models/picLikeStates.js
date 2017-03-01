@@ -32,10 +32,10 @@ PicLikeState.set('toObject', { getters: true });
 PicLikeState.index({ picLike: 1, date: -1}, { unique: true });
 
 PicLikeState.statics
-  .newInstance = function newInstance(state='active', picState=null) {
+  .newInstance = function newInstance(state='active', picLike=null) {
 	  let newPicLikeState = new this();
 
-		newPicLikeState.picState = picState;
+		newPicLikeState.picLike = picLike;
 		newPicLikeState.state = state;
 
 	  return newPicLikeState;

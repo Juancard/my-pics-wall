@@ -59,11 +59,84 @@ function picHandler () {
       .exec();
   },
 
+  this.setPicLikeState = (picLike, toState) => {
+    return new Promise((resolve, reject) => {
+      let newState = PicLikeState.newInstance(toState, picLike._id);
+      newState
+        .save()
+        .catch((err) => reject(
+            new http_verror(
+              err,
+              "Could not set state to %s for pic %s",
+              toState,
+              newState._id
+            )
+          )
+        )
+        .then((stateSaved) => {
+          picLike.state = stateSaved._id;
+          picLike
+            .save()
+            .catch((err) => {
+              PicLikeState
+                .remove(stateSaved)
+                .exec()
+                .catch(reject)
+                .then((removed) => reject(err))
+              return reject(
+                  new http_verror(
+                    err,
+                    "Could not save like %s",
+                    picLike._id
+                  )
+                )
+            })
+            .then((picLike) => {
+              picLike.state = stateSaved;
+              return resolve(picLike);
+            })
+        })
+      })
+
+  }
+
   this.removePic = (pic) => {
-    return Pic
-      .findById(pic._id)
-      .populate('user').populate('state')
-      .exec();
+    return new Promise((resolve, reject) => {
+      PicLike
+        .find({
+          'pic': pic._id,
+        })
+        .populate('state')
+        .exec()
+        .catch(reject)
+        .then((picLikes) => {
+          let promises = picLikes.map(
+            p => this.setPicLikeState(p, 'inactive')
+          )
+          Promise
+            .all(promises)
+            .catch(reject)
+            .then((likesSaved) => {
+              let newState = PicState.newInstance('inactive', pic._id);
+              newState
+                .save()
+                .catch(err => reject(
+                    new http_verror.InternalError(
+                      err,
+                      "Could not change state of pic to remove"
+                    )
+                  )
+                )
+                .then((stateSaved) => {
+                  pic.state = stateSaved._id;
+                  pic
+                    .save()
+                    .then(resolve)
+                    .catch(reject)
+                })
+            })
+        });
+      });
   },
 
   this.toggleLike = (pic, user) => {

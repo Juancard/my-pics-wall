@@ -80,24 +80,25 @@ module.exports = function (app, appEnv) {
   app.route('/pics/:pic([a-fA-F0-9]{24})')
     .delete(/*appEnv.middleware.isLoggedIn,*/ (req, res, next) => {
       console.log("in route delete pic");
-      picHandler.removePic(req.pic)
-      .then((removed) => {
-        let out = {
-          results: removed,
-          message: {
-            type: 'info',
-            text: 'Pic deleted succesfully'
+      picHandler
+        .removePic(req.pic)
+        .then((removed) => {
+          let out = {
+            results: removed,
+            message: {
+              type: 'info',
+              text: 'Pic deleted succesfully'
+            }
           }
-        }
-        res.json(out);
-      })
-      .catch((err) => next(
-          new appEnv.errors.InternalError(
-            err,
-            "Error in removing pic"
+          res.json(out);
+        })
+        .catch((err) => next(
+            new appEnv.errors.InternalError(
+              err,
+              "Error in removing pic"
+            )
           )
-        )
-      );
+        );
     })
 
     .post(appEnv.middleware.isLoggedIn, (req, res, next) => {

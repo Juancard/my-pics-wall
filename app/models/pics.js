@@ -25,7 +25,11 @@ var Pic = new Schema({
   },
   title: {
     type: String,
-    required: true
+    required: true,
+    validate : [
+      (t) => t.length > 3 && t.length < 20,
+      'Title length is out of range'
+    ]
   }
 });
 
